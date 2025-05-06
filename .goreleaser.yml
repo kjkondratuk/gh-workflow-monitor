@@ -40,12 +40,11 @@ changelog:
 
 snapshot:
   name_template: "{{ incpatch .Version }}-next"
-  prerelease: true
 
 release:
   draft: false
   prerelease: auto
   name_template: '{{ .ProjectName }} {{ .Version }}'
   extra_files:
-    - LICENSE
-    - README.md 
+    - glob: LICENSE
+    - glob: README.md 
