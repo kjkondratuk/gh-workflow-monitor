@@ -26,10 +26,11 @@ jobs:
           cache: true
 
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v5
-        with:
-          version: latest
-          args: --clean
+        run: |
+          curl -sL -o /tmp/goreleaser.tar.gz https://github.com/goreleaser/goreleaser/releases/download/v1.26.2/goreleaser_Linux_x86_64.tar.gz
+          tar -xf /tmp/goreleaser.tar.gz -C /tmp
+          sudo mv /tmp/goreleaser /usr/local/bin/goreleaser
+          sudo chmod +x /usr/local/bin/goreleaser
 
       - name: Run GoReleaser
         env:
