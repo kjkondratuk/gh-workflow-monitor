@@ -1,0 +1,12 @@
+with-expecter: true
+packages:
+  github.com/kjkondratuk/gh-workflow-monitor/pkg/github:
+    interfaces:
+      Client:
+        config:
+          dir: pkg/github/mocks
+          filename: mock_client.go
+          outpkg: mocks
+          resolve-type-alias: false
+          disable-version-string: true
+          issue-845-fix: true 
