@@ -6,13 +6,17 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
+      packages: write
     steps:
       - uses: actions/checkout@v4
         with:
