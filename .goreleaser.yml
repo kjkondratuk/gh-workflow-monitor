@@ -46,5 +46,4 @@ release:
   prerelease: auto
   name_template: '{{ .ProjectName }} {{ .Version }}'
   extra_files:
-    - glob: LICENSE
     - glob: README.md 
