@@ -25,30 +25,6 @@ jobs:
           go-version: '1.24'
           cache: true
 
-      - name: Install GoReleaser
-        run: |
-          curl -sL -o /tmp/goreleaser.tar.gz https://github.com/goreleaser/goreleaser/releases/download/v1.26.2/goreleaser_Linux_x86_64.tar.gz
-          tar -xf /tmp/goreleaser.tar.gz -C /tmp
-          sudo mv /tmp/goreleaser /usr/local/bin/goreleaser
-          sudo chmod +x /usr/local/bin/goreleaser
-
-      - name: Run GoReleaser
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: goreleaser release --clean
-
-  create-tag:
-    name: Create Tag
-    needs: release
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Get latest version
         id: get_version
         run: |
@@ -60,11 +36,23 @@ jobs:
           NEW_VERSION="v$MAJOR.$MINOR.$NEW_PATCH"
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
-      - name: Create and push tag
+      - name: Create tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git tag $NEW_VERSION
-          git push origin $NEW_VERSION 
+          git push origin $NEW_VERSION
+
+      - name: Install GoReleaser
+        run: |
+          curl -sL -o /tmp/goreleaser.tar.gz https://github.com/goreleaser/goreleaser/releases/download/v1.26.2/goreleaser_Linux_x86_64.tar.gz
+          tar -xf /tmp/goreleaser.tar.gz -C /tmp
+          sudo mv /tmp/goreleaser /usr/local/bin/goreleaser
+          sudo chmod +x /usr/local/bin/goreleaser
+
+      - name: Run GoReleaser
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: goreleaser release --clean 
